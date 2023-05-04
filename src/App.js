@@ -1,23 +1,50 @@
-import logo from './logo.svg';
+import React,{useState} from "react";
+import Buttons from "./Buttons";
 import './App.css';
-
+let deleted=false;
 function App() {
+  let [inputVal,setInput]=useState("");
+  function display(invalue){
+    
+    if(invalue!=="C"&&invalue!=="D"&&invalue!=="="){
+      if((inputVal[inputVal.length-1]==="+"||inputVal[inputVal.length-1]==="-"||inputVal[inputVal.length-1]==="*"||inputVal[inputVal.length-1]==="/"||inputVal[inputVal.length-1]==="."||inputVal[inputVal.length-1]==="%")
+      &&(invalue==="+"||invalue==="-"||invalue==="*"||invalue==="/"||invalue==="."||invalue==="%")){
+        
+          //setInput(inputVal.slice(0,-1));
+        setInput(inputVal)
+      }else{
+      setInput(inputVal+invalue);
+      }
+    }
+    if(invalue==="="){
+      deleted=true;
+      if(inputVal[inputVal.length-1]==="+"||inputVal[inputVal.length-1]==="-"||inputVal[inputVal.length-1]==="*"||inputVal[inputVal.length-1]==="/"||inputVal[inputVal.length-1]==="."||inputVal[inputVal.length-1]==="%"){
+        setInput(inputVal.slice(0,-1));
+      }else{
+        setInput(eval(inputVal))
+      }
+     // setInput(eval(inputVal));
+      console.log(inputVal);
+      console.log(inputVal.length);
+    }
+    if(invalue==="C"){
+      setInput("");
+    }
+    if(deleted===true){
+      if(invalue==="D"){
+        setInput("")
+      }
+    }
+    if(deleted===false&&invalue==="D"){
+        setInput(inputVal.slice(0, -1))
+    }
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input  defaultValue={inputVal}/>
+      <Buttons display={display}/>
+      
     </div>
   );
 }
